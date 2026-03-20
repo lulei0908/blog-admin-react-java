@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:8
+    image: mysql:8.0
     container_name: blog_mysql
     restart: unless-stopped
     environment:
@@ -13,27 +13,25 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./blog-backend/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-
-  redis:
-    image: redis:7-alpine
-    container_name: blog_redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
+    command: --default-authentication-plugin=mysql_native_password
 
   backend:
-    build: ./blog-backend
+    build:
+      context: ./blog-backend
+      dockerfile: Dockerfile
     container_name: blog_backend
     restart: unless-stopped
-    ports:
-      - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/blog_admin
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root123
+    ports:
+      - "8080:8080"
     depends_on:
       - mysql
+    volumes:
+      - ./uploads:/app/uploads
 
 volumes:
   mysql_data:
