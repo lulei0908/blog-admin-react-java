@@ -1,0 +1,13 @@
+package com.blog.service;
+
+import com.blog.dto.TagDTO;
+import com.blog.vo.TagVO;
+import java.util.List;
+
+public interface TagService {
+    List<TagVO> getList();
+    TagVO getById(Long id);
+    TagVO create(TagDTO dto);
+    TagVO update(Long id, TagDTO dto);
+    void delete(Long id);
+}
