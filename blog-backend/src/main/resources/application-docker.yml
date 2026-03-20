@@ -1,0 +1,5 @@
+spring:
+  profiles: docker
+  datasource:
+    url: jdbc:mysql://mysql:3306/blog_admin?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    password: root123
